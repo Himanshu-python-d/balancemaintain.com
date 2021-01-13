@@ -1,0 +1,142 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" ></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js" ></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script>
+  $(document).ready(function() {
+    $('#table').DataTable();
+} );
+</script>
+<div class="container mt-5" style="background-color:whitesmoke">
+  <div class="row">
+
+    <!-- First Col-4 -->
+
+    <div class="col-lg-4">
+
+    </div>
+
+    <!-- Second Col-4 -->
+
+    <div class="col-lg-4">
+      <h1 class="mt-2">Balance - {{data.balance}}</h1>
+      <button type="button" class="btn btn-lg btn-primary mr-5 mb-3" data-toggle="modal" data-target="#exampleModal">
+        Credit
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Credit Amount</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>Amount : -</label>
+                <input type="text" class="form-control" placeholder="Enter Amount" name="amount" >
+                <input type="hidden" class="form-control" name="credit" value="1" readonly>
+
+                <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-success mt-3" value="Credit">
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-lg btn-primary ml-5 mb-3" data-toggle="modal" data-target="#debit">
+        Debit
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="debit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="debit">Debit Amount</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>Amount : -</label>
+                <input type="text" class="form-control" placeholder="Enter Amount" name="amount" >
+                <input type="hidden" class="form-control" name="debit" value="0" readonly>
+
+                <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-success mt-3" value="Debit">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Col-4 -->
+
+    <div class="col-lg-4">
+
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- Start Table -->
+
+<div class="container mt-5">
+  <h2 class="text-center" style="font-weight:bold">Transaction List</h2>
+  <hr>
+
+  <table class="table table-bordered" id="table">
+    <thead>
+      <tr>
+        <th>Sr. No.</th>
+        <th>Payment Type</th>
+        <th>Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in transaction %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.cr_dr}}</td>
+        <td>{{i.amount}}</td>
+        <td><a href="{% url 'delete_history' i.id %}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+</div>
+
+{% ifequal error "no" %}
+<script>
+  alert('Amount Successfully');
+  window.location=('{% url 'home' %}');
+</script>
+{% endifequal %}
+{% ifequal error "yes" %}
+<script>
+  alert('Something went wrong, Please try Again');
+</script>
+{% endifequal %}
+
+
+    {% endblock %}

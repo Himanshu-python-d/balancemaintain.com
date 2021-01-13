@@ -1,0 +1,62 @@
+{% extends 'nav_log.html' %}
+  {% load static %}
+    {% block body %}
+
+      <div class="container mt-5">
+        <div class="row">
+
+          <!-- First Cal-6 -->
+
+          <div class="col-sm-6 md-5 pt-5" style="background-color:whitesmoke">
+            <h2 class="text-center" style="font-weight:bold">Existing Customer</h2>
+            <hr>
+            <p>By Creating an Account with our Website , U will be able to move through the Wallet Maintain Process and more....
+            </p>
+            <center><a href="/" class="btn btn-danger text-white mt-3">Already Have Account</a></center>
+          </div>
+
+          <!-- Second Col-6 -->
+
+          <div class="col-sm-6 md-5 pt-5 pb-5" style="background-color:whitesmoke">
+            <h2 class="text-center" style="font-weight:bold">Registration With Us</h2>
+            <hr>
+            <p>If you have not an account with us ,please signup...!</p>
+
+            <!-- Form Method Start -->
+
+            <form method="post">
+              {% csrf_token %}
+              <label>First Name</label>
+                <input type="text" class="form-control" placeholder="Enter First Name" name="firstname">
+              <label>Last Name</label>
+                <input type="text" class="form-control" placeholder="Enter Last Name" name="lastname">
+              <label>Contact No.</label>
+                <input type="text" class="form-control" placeholder="Enter Contact No." name="contact">
+              <label>Email-ID</label>
+                <input type="email" class="form-control" placeholder="Enter Email-id" name="emailid">
+              <label>Password</label>
+                <input type="password" class="form-control" placeholder="Enter Password" name="password">
+              <input type="hidden" name="balance" value="0">
+                <input type="submit" class="btn btn-lg btn-success mt-3" value="Submit">
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <br><br>
+
+      <!-- Check that Condition True Or False -->
+
+      {% ifequal error "no" %}
+      <script>
+        alert('Signup Successfully');
+        window.location=('{% url 'login' %}');
+      </script>
+      {% endifequal %}
+      {% ifequal error "yes" %}
+      <script>
+        alert('Something went wrong, Please try Again');
+      </script>
+      {% endifequal %}
+
+    {% endblock %}
