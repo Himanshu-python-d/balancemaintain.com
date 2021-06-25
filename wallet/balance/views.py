@@ -4,7 +4,7 @@ from .models import Signup, Transaction
 from django.contrib.auth import authenticate, logout,login
 from datetime import date
 
-# Create your views here.
+# Create your vie dscdscdc ws here.
 #
 def home(request):
     if not request.user.is_authenticated:
